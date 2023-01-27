@@ -1,11 +1,10 @@
 package com.emzio.todo_api.logic;
 
 import com.emzio.todo_api.TaskConfigurationProperties;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import com.emzio.todo_api.TaskConfigurationProperties;
 import com.emzio.todo_api.model.*;
 import com.emzio.todo_api.model.projection.GroupReadModel;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
