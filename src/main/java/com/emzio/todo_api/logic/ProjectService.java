@@ -1,7 +1,5 @@
 package com.emzio.todo_api.logic;
 
-import org.springframework.stereotype.Service;
-import org.springframework.web.context.annotation.RequestScope;
 import com.emzio.todo_api.TaskConfigurationProperties;
 import com.emzio.todo_api.model.*;
 import com.emzio.todo_api.model.projection.GroupReadModel;
@@ -10,8 +8,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Service
-@RequestScope
+//@Service
+//@RequestScope
 public class ProjectService {
     private final ProjectRepository repository;
     private final TaskGroupsRepository taskGroupsRepository;
