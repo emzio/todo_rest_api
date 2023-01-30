@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 public class TestConfiguration {
 
     @Bean
-    @Profile({"integration", "!prod"})
+    @Profile({"integration & !prod"})
     public TaskRepository testRepo(){
         return new TaskRepository() {
             private Map<Integer, Task> taskMap = new HashMap<>();
