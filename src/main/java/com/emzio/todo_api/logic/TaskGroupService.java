@@ -1,9 +1,5 @@
 package com.emzio.todo_api.logic;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
-import org.springframework.web.context.annotation.RequestScope;
 import com.emzio.todo_api.model.TaskGroups;
 import com.emzio.todo_api.model.TaskGroupsRepository;
 import com.emzio.todo_api.model.TaskRepository;
@@ -13,10 +9,7 @@ import com.emzio.todo_api.model.projection.GroupWriteModel;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Service
-@RequestScope
 public class TaskGroupService {
-    private final Logger logger = LoggerFactory.getLogger(TaskGroupService.class);
     private final TaskGroupsRepository repository;
     private final TaskRepository taskRepository;
 

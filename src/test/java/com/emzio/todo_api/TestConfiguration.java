@@ -18,12 +18,13 @@ import java.util.stream.Collectors;
 
 
 @Configuration
-//@org.springframework.boot.test.context.TestConfiguration
 public class TestConfiguration {
 
-    @Bean
-    @Profile({"integration", "!prod"})
-    public TaskRepository testRepo(){
+        @Bean
+        @Primary
+        @Profile("integration")
+
+        public TaskRepository testRepo(){
         return new TaskRepository() {
             private Map<Integer, Task> taskMap = new HashMap<>();
 
@@ -45,7 +46,7 @@ public class TestConfiguration {
             @Override
             public List<Task> findByDoneIs(Boolean done) {
                 return taskMap.values().stream()
-                        .filter(TaskAuditable::isDone)
+                        .filter(task -> task.isDone().equals(done))
                         .collect(Collectors.toList());
             }
 
