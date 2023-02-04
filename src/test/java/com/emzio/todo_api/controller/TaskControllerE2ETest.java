@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-//@ActiveProfiles("integration")
+@ActiveProfiles("integrationTmp")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class TaskControllerE2ETest {
 
@@ -29,12 +29,13 @@ class TaskControllerE2ETest {
     @Test
     void httpGet_returnsAllTasks(){
         //given
+        int initial = repo.findAll().size();
         repo.save(new Task("foo", LocalDateTime.now()));
         repo.save(new Task("bar", LocalDateTime.now()));
         //when
         Task[] result = restTemplate.getForObject("http://localhost:" + port + "/tasks", Task[].class);
         //then
-        assertThat(result).hasSize(2);
+        assertThat(result).hasSize(initial+2);
     }
 
 }

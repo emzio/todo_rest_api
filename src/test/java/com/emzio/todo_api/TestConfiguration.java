@@ -2,6 +2,7 @@ package com.emzio.todo_api;
 
 import com.emzio.todo_api.model.Task;
 import com.emzio.todo_api.model.TaskAuditable;
+import com.emzio.todo_api.model.TaskGroups;
 import com.emzio.todo_api.model.TaskRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import javax.sql.DataSource;
+import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,9 +25,10 @@ import java.util.stream.Collectors;
 public class TestConfiguration {
     @Bean
     @Primary
-    @Profile("!integration")
+//    @Profile("!integration")
+    @Profile("integrationTmp")
     public DataSource e2eTestDataSource(){
-        DriverManagerDataSource dataSource = new DriverManagerDataSource("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1","sa", "");
+        var dataSource = new DriverManagerDataSource("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1","sa", "");
         dataSource.setDriverClassName("org.h2.Driver");
         return dataSource;
     }
@@ -72,7 +75,16 @@ public class TestConfiguration {
 
             @Override
             public Task save(Task entity) {
-                return taskMap.put(taskMap.size() + 1, entity);
+                int key = taskMap.size() + 1;
+                try {
+                    var field = Task.class.getSuperclass().getDeclaredField("id");
+                    field.setAccessible(true);
+                    field.set(entity, key);
+                } catch (NoSuchFieldException | IllegalAccessException e) {
+                    throw new RuntimeException(e);
+                }
+                taskMap.put(key, entity);
+                return taskMap.get(key);
             }
         };
     }
