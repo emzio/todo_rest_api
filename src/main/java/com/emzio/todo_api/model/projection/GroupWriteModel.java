@@ -28,17 +28,9 @@ public class GroupWriteModel {
     public TaskGroups toGroup(){
         TaskGroups result = new TaskGroups();
         result.setDescription(description);
-
-        /*
-        Moje stare Rozwiązanie:
-        result.setTasks(tasks.stream()
-                .map(groupTaskWriteModel -> new Task(groupTaskWriteModel.getDescription(), groupTaskWriteModel.getDeadline()))
-                .collect(Collectors.toSet()));
-        */
-
         result.setTasks(
                 tasks.stream()
-                        .map(GroupTaskWriteModel::toTask)
+                        .map(source -> source.toTask(result))
                         .collect(Collectors.toSet())
         );
         return result;
