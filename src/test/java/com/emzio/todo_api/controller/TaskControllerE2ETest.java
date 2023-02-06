@@ -10,6 +10,7 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -38,4 +39,14 @@ class TaskControllerE2ETest {
         assertThat(result).hasSize(initial+2);
     }
 
+    @Test
+    void httpGet_returnsTaskForId(){
+        //given
+        int id = repo.save(new Task("foo", LocalDateTime.now())).getId();
+        //when
+        Task result = restTemplate.getForObject("http://localhost:" + port + "/tasks/" + id, Task.class);
+        //then
+        assertThat(result).isInstanceOf(Task.class);
+        assertThat(result).matches(task-> task.getDescription().equals("foo"));
+    }
 }

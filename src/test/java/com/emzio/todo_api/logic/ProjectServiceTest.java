@@ -86,7 +86,7 @@ class ProjectServiceTest {
                 .thenReturn(Optional.of(project));
         // and
         InMemoryGroupRepository inMemoryGroupRepo = inMemoryGroupRepository();
-        var serviceWithInMemGroupRepo = new TaskGroupService(inMemoryGroupRepo, null);
+        var serviceWithInMemGroupRepo = dummyTaskGroupService(inMemoryGroupRepo);
         int countBeforeCall = inMemoryGroupRepo.count();
         // and
         TaskConfigurationProperties mockConfig = configurationReturning(true);
@@ -101,6 +101,10 @@ class ProjectServiceTest {
 
         assertThat(countBeforeCall+1).isEqualTo(inMemoryGroupRepo.count());
 
+    }
+
+    private static TaskGroupService dummyTaskGroupService(InMemoryGroupRepository inMemoryGroupRepo) {
+        return new TaskGroupService(inMemoryGroupRepo, null);
     }
 
     private Project projectWith(String description, Set<Integer> daysToDeadline){

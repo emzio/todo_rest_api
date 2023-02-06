@@ -7,7 +7,7 @@ import javax.persistence.*;
 @Table(name = "project_steps")
 public class ProjectStep {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private int id;
     private String description;
