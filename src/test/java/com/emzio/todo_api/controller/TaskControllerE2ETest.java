@@ -7,8 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.http.RequestEntity;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.net.http.HttpRequest;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -48,5 +50,24 @@ class TaskControllerE2ETest {
         //then
         assertThat(result).isInstanceOf(Task.class);
         assertThat(result).matches(task-> task.getDescription().equals("foo"));
+    }
+
+    @Test
+    void httpPost_returnsSavedTask(){
+        //given
+        int id = repo.save(new Task("foo", LocalDateTime.now())).getId();
+        String reqJson =
+                "    \"done\": true," +
+                "    \"description\": \"test json\"," +
+                "    \"deadline\": \"2023-10-12T23:59:59.999\"";
+        RequestEntity<String> reqBody = RequestEntity.post("http://localhost:" + port + "/tasks").body(reqJson);
+
+        //when
+//        Task result = restTemplate.getForObject("http://localhost:" + port + "/tasks/" + id, Task.class);
+            Task result = restTemplate.postForObject("http://localhost:" + port + "/tasks", reqBody, Task.class);
+        //then
+        assertThat(result).isInstanceOf(Task.class);
+        assertThat(result).hasFieldOrProperty("description");
+//        assertThat(result).matches(task-> task.getDescription().equals("foo"));
     }
 }
