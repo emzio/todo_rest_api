@@ -1,6 +1,7 @@
 package com.emzio.todo_api.model.projection;
 
 import com.emzio.todo_api.model.Task;
+import com.emzio.todo_api.model.TaskGroups;
 
 import java.time.LocalDateTime;
 
@@ -24,7 +25,7 @@ public class GroupTaskWriteModel {
         this.description = description;
     }
 
-    public Task toTask(){
-        return new Task(description, deadline);
+    public Task toTask(TaskGroups group){
+        return new Task(description, deadline, group);
     }
 }

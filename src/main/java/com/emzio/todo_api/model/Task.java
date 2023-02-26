@@ -15,8 +15,15 @@ public class Task extends TaskAuditable{
     }
 
     public Task(String description, LocalDateTime deadline) {
+        this(description, deadline, null);
+    }
+
+    public Task(String description, LocalDateTime deadline, TaskGroups group) {
         this.description = description;
         this.deadline = deadline;
+        if (group != null){
+            this.group = group;
+        }
     }
 
     public LocalDateTime getDeadline() {
