@@ -1,6 +1,5 @@
 package com.emzio.todo_api.controller;
 
-import com.emzio.todo_api.logic.TaskService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
@@ -13,7 +12,6 @@ import com.emzio.todo_api.model.TaskRepository;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 
 
 @RestController
@@ -21,19 +19,16 @@ import java.util.concurrent.CompletableFuture;
 class TaskController {
     private final Logger logger = LoggerFactory.getLogger(TaskController.class);
     private final TaskRepository taskRepository;
-    private final TaskService service;
 
-    TaskController(TaskRepository taskRepository, TaskService service) {
+    TaskController(TaskRepository taskRepository) {
         this.taskRepository = taskRepository;
-        this.service = service;
     }
 
 
     @GetMapping(params = {"!size","!page", "!sort"})
-    CompletableFuture<ResponseEntity<List<Task>>> readAllTasks(){
+    ResponseEntity<?> readAllTasks(){
         logger.warn("Exposing all Tasks!");
-        return  service.findAllAsync().thenApply(body -> ResponseEntity.ok(body));
-//        return ResponseEntity.ok(taskRepository.findAll());
+        return ResponseEntity.ok(taskRepository.findAll());
     }
 
     @GetMapping
