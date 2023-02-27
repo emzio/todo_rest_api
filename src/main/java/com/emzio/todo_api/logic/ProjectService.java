@@ -10,8 +10,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-//@Service
-//@RequestScope
 public class ProjectService {
     private final ProjectRepository repository;
     private final TaskGroupsRepository taskGroupsRepository;
