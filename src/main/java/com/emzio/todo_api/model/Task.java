@@ -1,5 +1,7 @@
 package com.emzio.todo_api.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
@@ -7,6 +9,9 @@ import java.time.LocalDateTime;
 @Table(name = "tasks")
 public class Task extends TaskAuditable{
     private LocalDateTime deadline;
+
+    //TODO remove @JsonIgnore
+    @JsonIgnore
     @ManyToOne()
     @JoinColumn(name = "TASK_GROUPS_ID")
     private TaskGroups group;

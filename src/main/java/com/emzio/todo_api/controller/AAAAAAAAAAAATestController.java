@@ -1,7 +1,5 @@
 package com.emzio.todo_api.controller;
 
-import com.emzio.todo_api.TodoApiApplication;
-import org.apache.catalina.core.ApplicationContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
@@ -10,17 +8,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import com.emzio.todo_api.logic.ProjectService;
-import com.emzio.todo_api.model.projection.GroupReadModel;
-
-import java.time.LocalDateTime;
 
 @Controller
-public class TestController {
+public class AAAAAAAAAAAATestController {
 
-    private final Logger logger = LoggerFactory.getLogger(TestController.class);
+    private final Logger logger = LoggerFactory.getLogger(AAAAAAAAAAAATestController.class);
     private final ProjectService projectService;
 
-    public TestController(ProjectService projectService) {
+    public AAAAAAAAAAAATestController(ProjectService projectService) {
         this.projectService = projectService;
     }
 
