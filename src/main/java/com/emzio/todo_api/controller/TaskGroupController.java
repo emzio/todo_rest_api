@@ -27,8 +27,8 @@ public class TaskGroupController {
 
     @PostMapping
     ResponseEntity<GroupReadModel> createGroup(@RequestBody @Valid GroupWriteModel sourceGroup){
-        GroupReadModel groupReadModel = service.create(sourceGroup);
-        return ResponseEntity.created(URI.create("/")).body(groupReadModel);
+        GroupReadModel result = service.create(sourceGroup);
+        return ResponseEntity.created(URI.create("/" + result.getId())).body(result);
     }
 
     @GetMapping
@@ -46,6 +46,16 @@ public class TaskGroupController {
     @GetMapping("/{id}/tasks")
     ResponseEntity<List<Task>> tasksForGroup(@PathVariable int id){
         return ResponseEntity.ok(repository.findAllByGroup_Id(id));
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    ResponseEntity<String> handleIllegalArgument(IllegalArgumentException e){
+        return ResponseEntity.notFound().build();
+    }
+
+    @ExceptionHandler(IllegalStateException.class)
+    ResponseEntity<String> handleIllegalState(IllegalStateException e){
+        return ResponseEntity.badRequest().body(e.getMessage());
     }
 
 }
