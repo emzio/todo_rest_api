@@ -4,6 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,4 +25,6 @@ public interface TaskRepository {
     Task save(Task entity);
 
     List<Task> findAllByGroup_Id(int groupId);
+
+    List<Task> findAllByDoneIsFalseAndDeadlineIsBefore(LocalDateTime dateTime);
 }

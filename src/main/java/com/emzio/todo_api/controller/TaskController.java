@@ -11,6 +11,8 @@ import com.emzio.todo_api.model.TaskRepository;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -80,5 +82,12 @@ class TaskController {
     ResponseEntity<Task> createTask(@RequestBody @Valid Task task){
         Task resultTask = taskRepository.save(task);
         return ResponseEntity.created(URI.create("/" + resultTask.getId())).body(resultTask);
+    }
+
+    @GetMapping("search/today")
+    ResponseEntity<List<Task>> readTasksForToday(){
+        LocalDateTime tomorrow = LocalDate.now().atStartOfDay().plusDays(1);
+        List<Task> result = taskRepository.findAllByDoneIsFalseAndDeadlineIsBefore(tomorrow);
+        return ResponseEntity.ok(result);
     }
 }
