@@ -1,5 +1,6 @@
 package com.emzio.todo_api.logic;
 
+import com.emzio.todo_api.model.Project;
 import com.emzio.todo_api.model.TaskGroups;
 import com.emzio.todo_api.model.TaskGroupsRepository;
 import com.emzio.todo_api.model.TaskRepository;
@@ -20,7 +21,11 @@ public class TaskGroupService {
 
 
     public GroupReadModel create(GroupWriteModel source){
-        TaskGroups result = repository.save(source.toGroup());
+        return create(source, null);
+    }
+
+    public GroupReadModel create(GroupWriteModel source, Project project) {
+        TaskGroups result = repository.save(source.toGroup(project));
         return new GroupReadModel(result);
     }
 
@@ -39,4 +44,5 @@ public class TaskGroupService {
         result.setDone(!result.isDone());
         repository.save(result);
     }
+
 }

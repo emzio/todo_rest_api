@@ -5,6 +5,7 @@ import com.emzio.todo_api.model.*;
 import com.emzio.todo_api.model.projection.GroupReadModel;
 import com.emzio.todo_api.model.projection.GroupTaskWriteModel;
 import com.emzio.todo_api.model.projection.GroupWriteModel;
+import com.emzio.todo_api.model.projection.ProjectWriteModel;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -27,8 +28,8 @@ public class ProjectService {
         return repository.findAll();
     }
 
-    public Project save(Project source){
-        return repository.save(source);
+    public Project save(ProjectWriteModel source){
+        return repository.save(source.toProject());
     }
 
     public GroupReadModel createGroup(int projectId, LocalDateTime deadline){
@@ -48,7 +49,7 @@ public class ProjectService {
                                     return task;
                                 }).collect(Collectors.toSet())
                     );
-                    return taskGroupService.create(targetGroup);
+                    return taskGroupService.create(targetGroup, project);
                 }).orElseThrow(() -> new IllegalArgumentException("Project with given id not found"));
 
 //        TaskGroups result = repository.findById(projectId)

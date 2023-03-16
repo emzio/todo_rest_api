@@ -86,8 +86,7 @@ class TaskController {
 
     @GetMapping("search/today")
     ResponseEntity<List<Task>> readTasksForToday(){
-        LocalDateTime tomorrow = LocalDate.now().atStartOfDay().plusDays(1);
-        List<Task> result = taskRepository.findAllByDoneIsFalseAndDeadlineIsBefore(tomorrow);
+        List<Task> result = taskRepository.tasksForDate(LocalDate.now());
         return ResponseEntity.ok(result);
     }
 }

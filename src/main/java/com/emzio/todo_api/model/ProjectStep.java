@@ -2,6 +2,7 @@ package com.emzio.todo_api.model;
 
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "project_steps")
@@ -10,6 +11,7 @@ public class ProjectStep {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private int id;
+    @NotBlank(message = "Project step's description must not be empty")
     private String description;
     @Column(name = "days_to_deadline")
     private Long daysToDeadline;
@@ -29,7 +31,7 @@ public class ProjectStep {
         return description;
     }
 
-    void setDescription(String description) {
+    public void setDescription(String description) {
         this.description = description;
     }
 
@@ -45,7 +47,7 @@ public class ProjectStep {
         return project;
     }
 
-    void setProject(Project project) {
+    public void setProject(Project project) {
         this.project = project;
     }
 

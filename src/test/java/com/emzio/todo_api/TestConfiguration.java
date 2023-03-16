@@ -4,6 +4,7 @@ import com.emzio.todo_api.model.Task;
 import com.emzio.todo_api.model.TaskAuditable;
 import com.emzio.todo_api.model.TaskGroups;
 import com.emzio.todo_api.model.TaskRepository;
+import com.sun.xml.bind.v2.TODO;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -14,6 +15,7 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import javax.sql.DataSource;
 import java.lang.reflect.Field;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -90,6 +92,12 @@ public class TestConfiguration {
             @Override
             public List<Task> findAllByGroup_Id(int groupId) {
                 return List.of();
+            }
+
+            //TODO should override default method from TaskRepository?
+            @Override
+            public List<Task> findAllByDeadlineIsNullAndDoneIsFalseOrDoneIsFalseAndDeadlineIsBefore(LocalDateTime dateTime) {
+                return null;
             }
         };
     }

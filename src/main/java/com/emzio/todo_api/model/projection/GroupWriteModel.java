@@ -1,5 +1,6 @@
 package com.emzio.todo_api.model.projection;
 
+import com.emzio.todo_api.model.Project;
 import com.emzio.todo_api.model.TaskGroups;
 
 import java.util.Set;
@@ -25,9 +26,10 @@ public class GroupWriteModel {
         this.tasks = tasks;
     }
 
-    public TaskGroups toGroup(){
+    public TaskGroups toGroup(Project project){
         TaskGroups result = new TaskGroups();
         result.setDescription(description);
+        result.setProject(project);
         result.setTasks(
                 tasks.stream()
                         .map(source -> source.toTask(result))
