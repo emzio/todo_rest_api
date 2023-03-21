@@ -37,6 +37,7 @@ public class ProjectController {
         if (!bindingResult.hasErrors()) {
             service.save(current);
             model.addAttribute("project", new ProjectWriteModel());
+            model.addAttribute("projects", getProjects());
             model.addAttribute("message", "Dodano projekt");
         }
         return "projects";
