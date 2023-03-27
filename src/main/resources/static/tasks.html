@@ -24,7 +24,7 @@
     (async function() {
         const main = document.querySelector('main');
         const params = new URLSearchParams(location.search);
-        const response = params.has('group') ? await fetch(`/groups/${params.get('group')}`) : await fetch('/tasks');
+        const response = params.has('group') ? await fetch(`/groups/${params.get('group')}/tasks`) : await fetch('/tasks');
         if (response.ok) {
             const tasks = await response.json();
             const list = document.createElement('ul');

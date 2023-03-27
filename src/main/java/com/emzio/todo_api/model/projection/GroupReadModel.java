@@ -3,6 +3,7 @@ package com.emzio.todo_api.model.projection;
 import com.emzio.todo_api.model.TaskGroups;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -17,6 +18,7 @@ public class GroupReadModel {
         description = source.getDescription();
         source.getTasks().stream()
                 .map(task -> task.getDeadline())
+                .filter(Objects::nonNull)
                 .max((localDateTime, t1) -> localDateTime.compareTo(t1))
                 .ifPresent(localDateTime -> deadline = localDateTime);
         tasks = source.getTasks().stream()
