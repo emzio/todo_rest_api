@@ -5,7 +5,9 @@ import com.emzio.todo_api.model.Task;
 import com.emzio.todo_api.model.TaskRepository;
 import com.emzio.todo_api.model.projection.GroupReadModel;
 import com.emzio.todo_api.model.projection.GroupWriteModel;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,7 +15,7 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 
-@RestController
+@Controller
 @RequestMapping("/groups")
 public class TaskGroupController {
 
@@ -25,25 +27,29 @@ public class TaskGroupController {
         this.repository = repository;
     }
 
-    @PostMapping
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
     ResponseEntity<GroupReadModel> createGroup(@RequestBody @Valid GroupWriteModel sourceGroup){
         GroupReadModel result = service.create(sourceGroup);
         return ResponseEntity.created(URI.create("/" + result.getId())).body(result);
     }
 
-    @GetMapping
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
     ResponseEntity<List<GroupReadModel>> readAllGroups(){
         return ResponseEntity.ok(service.readAll());
     }
 
     @Transactional
-    @PatchMapping("{id}")
+    @ResponseBody
+    @PatchMapping( path = "{id}")
     ResponseEntity<String> toggleGroup(@PathVariable int id){
         service.toggleGroup(id);
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/{id}/tasks")
+    @GetMapping(path = "/{id}/tasks", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
     ResponseEntity<List<Task>> tasksForGroup(@PathVariable int id){
         return ResponseEntity.ok(repository.findAllByGroup_Id(id));
     }
