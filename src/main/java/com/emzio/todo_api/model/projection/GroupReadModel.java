@@ -2,6 +2,7 @@ package com.emzio.todo_api.model.projection;
 
 import com.emzio.todo_api.model.TaskGroups;
 
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Set;
@@ -9,6 +10,7 @@ import java.util.stream.Collectors;
 
 public class GroupReadModel {
     private int id;
+    @NotBlank(message = "Group description must not be empty")
     private String description;
     private LocalDateTime deadline;
     private Set<GroupTaskReadModel> tasks;

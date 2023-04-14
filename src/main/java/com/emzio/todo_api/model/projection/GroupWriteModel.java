@@ -3,12 +3,24 @@ package com.emzio.todo_api.model.projection;
 import com.emzio.todo_api.model.Project;
 import com.emzio.todo_api.model.TaskGroups;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 public class GroupWriteModel {
+    @NotBlank(message = "Group description must not be empty")
     private String description;
-    private Set<GroupTaskWriteModel> tasks;
+    @Valid
+    private List<GroupTaskWriteModel> tasks = new ArrayList<>();
+
+    public GroupWriteModel() {
+        tasks.add(new GroupTaskWriteModel());
+    }
 
     public String getDescription() {
         return description;
@@ -18,11 +30,11 @@ public class GroupWriteModel {
         this.description = description;
     }
 
-    public Set<GroupTaskWriteModel> getTasks() {
+    public List<GroupTaskWriteModel> getTasks() {
         return tasks;
     }
 
-    public void setTasks(Set<GroupTaskWriteModel> tasks) {
+    public void setTasks(List<GroupTaskWriteModel> tasks) {
         this.tasks = tasks;
     }
 

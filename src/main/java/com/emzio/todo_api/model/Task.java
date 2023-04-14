@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "tasks")
 public class Task extends TaskAuditable{
+
     private LocalDateTime deadline;
 
     //TODO remove @JsonIgnore

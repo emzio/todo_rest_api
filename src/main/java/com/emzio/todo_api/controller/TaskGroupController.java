@@ -6,13 +6,17 @@ import com.emzio.todo_api.model.TaskRepository;
 import com.emzio.todo_api.model.projection.GroupReadModel;
 import com.emzio.todo_api.model.projection.GroupTaskWriteModel;
 import com.emzio.todo_api.model.projection.GroupWriteModel;
+import org.springframework.boot.context.properties.bind.BindResult;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.naming.Binding;
 import javax.validation.Valid;
 import java.net.URI;
 import java.time.LocalDateTime;
@@ -45,10 +49,11 @@ public class TaskGroupController {
         return ResponseEntity.ok(service.readAll());
     }
 
+    ///TODO why intelliJ ask for public method?
     @Transactional
     @ResponseBody
     @PatchMapping( path = "{id}")
-    ResponseEntity<String> toggleGroup(@PathVariable int id){
+    public ResponseEntity<String> toggleGroup(@PathVariable int id){
         service.toggleGroup(id);
         return ResponseEntity.noContent().build();
     }
@@ -60,34 +65,37 @@ public class TaskGroupController {
     }
 
     @GetMapping(produces = MediaType.TEXT_HTML_VALUE)
-//    @GetMapping()
     String showGroups(Model model){
-        List<GroupReadModel> groupReadModels = service.readAll();
-        model.addAttribute("groups", groupReadModels);
-        GroupWriteModel groupWriteModel = new GroupWriteModel();
-        GroupTaskWriteModel groupTaskWriteModel = new GroupTaskWriteModel();
-        groupTaskWriteModel.setDeadline(LocalDateTime.now());
-        groupTaskWriteModel.setDescription("foo");
-        groupWriteModel.setTasks(Set.of(groupTaskWriteModel));
-        model.addAttribute("groupWrite", groupWriteModel);
+        model.addAttribute("groupWrite", new GroupWriteModel());
         return "/groups";
     }
 
-    @PostMapping(params = {"addTask"}, produces = MediaType.TEXT_HTML_VALUE)
-    @ResponseBody
-    String addTaskToGroups(Model model){
-//        List<GroupReadModel> groupReadModels = service.readAll();
-//        model.addAttribute("groups", groupReadModels);
-//        GroupWriteModel groupWriteModel = new GroupWriteModel();
-//        GroupTaskWriteModel groupTaskWriteModel = new GroupTaskWriteModel();
-//        groupTaskWriteModel.setDeadline(LocalDateTime.now());
-//        groupTaskWriteModel.setDescription("foo");
-//        groupWriteModel.setTasks(Set.of(groupTaskWriteModel));
-//        model.addAttribute("groupWrite", groupWriteModel);
-//        return "/groups";
-        return "addTask param Found";
+    @PostMapping(params = {"addTask"}, produces = MediaType.TEXT_HTML_VALUE, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    String addTaskToGroups(@ModelAttribute ("groupWrite") GroupWriteModel groupWrite, Model model){
+        List<GroupTaskWriteModel> tasks = groupWrite.getTasks();
+        tasks.add(new GroupTaskWriteModel());
+        model.addAttribute("groupWrite", groupWrite);
+        return "/groups";
     }
 
+    @PostMapping(produces = MediaType.TEXT_HTML_VALUE, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    String addGroup(@ModelAttribute ("groupWrite") @Valid GroupWriteModel groupWrite,
+                    BindingResult bindingResult,
+                    Model model){
+        if (!bindingResult.hasErrors()) {
+            GroupReadModel result = service.create(groupWrite);
+            model.addAttribute("message", "Dodano Grupę");
+            model.addAttribute("groups", getGroups());
+            model.addAttribute("groupWrite", new GroupWriteModel());
+            return "/groups";
+        }
+        return "/groups";
+    }
+
+    @ModelAttribute("groups")
+    List<GroupReadModel> getGroups(){
+        return service.readAll();
+    }
 
     @ExceptionHandler(IllegalArgumentException.class)
     ResponseEntity<String> handleIllegalArgument(IllegalArgumentException e){
