@@ -13,10 +13,6 @@ import java.util.List;
 @Repository
 interface SQLTaskRepository extends TaskRepository, JpaRepository<Task, Integer> {
 
-//    @Override
-//    @Query(nativeQuery = true, value = "select count(*) > 0 from TASKS where id=?1")
-//    boolean existsById(Integer id);
-
     @Override
     @Query(nativeQuery = true, value = "select count(*) > 0 from TASKS where id=:id")
     boolean existsById(@Param("id") Integer id);

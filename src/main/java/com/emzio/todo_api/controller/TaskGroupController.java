@@ -6,8 +6,6 @@ import com.emzio.todo_api.model.TaskRepository;
 import com.emzio.todo_api.model.projection.GroupReadModel;
 import com.emzio.todo_api.model.projection.GroupTaskWriteModel;
 import com.emzio.todo_api.model.projection.GroupWriteModel;
-import org.springframework.boot.context.properties.bind.BindResult;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -16,13 +14,9 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.naming.Binding;
 import javax.validation.Valid;
 import java.net.URI;
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/groups")
@@ -70,11 +64,9 @@ public class TaskGroupController {
         return "/groups";
     }
 
-    @PostMapping(params = {"addTask"}, produces = MediaType.TEXT_HTML_VALUE, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    String addTaskToGroups(@ModelAttribute ("groupWrite") GroupWriteModel groupWrite, Model model){
-        List<GroupTaskWriteModel> tasks = groupWrite.getTasks();
-        tasks.add(new GroupTaskWriteModel());
-        model.addAttribute("groupWrite", groupWrite);
+    @PostMapping(params = {"addTask"}, produces = MediaType.TEXT_HTML_VALUE)
+    String addTaskToGroups(@ModelAttribute ("groupWrite") GroupWriteModel groupWrite){
+        groupWrite.getTasks().add(new GroupTaskWriteModel());
         return "/groups";
     }
 
@@ -87,7 +79,6 @@ public class TaskGroupController {
             model.addAttribute("message", "Dodano Grupę");
             model.addAttribute("groups", getGroups());
             model.addAttribute("groupWrite", new GroupWriteModel());
-            return "/groups";
         }
         return "/groups";
     }

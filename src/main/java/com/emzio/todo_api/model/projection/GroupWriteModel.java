@@ -13,14 +13,13 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class GroupWriteModel {
+    public GroupWriteModel() {
+        tasks.add(new GroupTaskWriteModel());
+    }
     @NotBlank(message = "Group description must not be empty")
     private String description;
     @Valid
     private List<GroupTaskWriteModel> tasks = new ArrayList<>();
-
-    public GroupWriteModel() {
-        tasks.add(new GroupTaskWriteModel());
-    }
 
     public String getDescription() {
         return description;
