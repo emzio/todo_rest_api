@@ -20,6 +20,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/groups")
+@IllegalExceptionProcessing
 public class TaskGroupController {
 
     private final TaskGroupService service;
@@ -87,15 +88,6 @@ public class TaskGroupController {
     List<GroupReadModel> getGroups(){
         return service.readAll();
     }
-
-    @ExceptionHandler(IllegalArgumentException.class)
-    ResponseEntity<String> handleIllegalArgument(IllegalArgumentException e){
-        return ResponseEntity.notFound().build();
-    }
-
-    @ExceptionHandler(IllegalStateException.class)
-    ResponseEntity<String> handleIllegalState(IllegalStateException e){
-        return ResponseEntity.badRequest().body(e.getMessage());
-    }
-
 }
+
+
