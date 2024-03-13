@@ -1,6 +1,5 @@
 package com.emzio.todo_api.controller;
 
-import com.sun.xml.txw2.IllegalAnnotationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;

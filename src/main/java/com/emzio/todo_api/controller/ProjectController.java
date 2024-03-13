@@ -4,6 +4,7 @@ import com.emzio.todo_api.logic.ProjectService;
 import com.emzio.todo_api.model.Project;
 import com.emzio.todo_api.model.ProjectStep;
 import com.emzio.todo_api.model.projection.ProjectWriteModel;
+import io.micrometer.core.annotation.Timed;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -50,6 +51,7 @@ public class ProjectController {
     }
 
     @PostMapping("/{id}")
+    @Timed(value = "project.create.group", histogram = true, percentiles = {.5, .95, .99})
     String createGroup(
             @PathVariable int id,
             @ModelAttribute("project") ProjectWriteModel current,
