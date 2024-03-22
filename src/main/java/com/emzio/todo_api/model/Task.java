@@ -1,5 +1,6 @@
 package com.emzio.todo_api.model;
 
+import com.emzio.todo_api.model.event.TaskEvent;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
@@ -54,5 +55,8 @@ public class Task extends TaskAuditable{
         deadline = source.deadline;
 //        group = source.group;
     }
-
+    public TaskEvent toggle() {
+        this.done = !this.done;
+        return TaskEvent.changed(this);
+    }
 }

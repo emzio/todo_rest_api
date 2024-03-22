@@ -1,18 +1,18 @@
 package com.emzio.todo_api.controller;
 
+import com.emzio.todo_api.model.Task;
+import com.emzio.todo_api.model.TaskRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-import com.emzio.todo_api.model.Task;
-import com.emzio.todo_api.model.TaskRepository;
 
 import javax.validation.Valid;
 import java.net.URI;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -20,9 +20,11 @@ import java.util.List;
 @RequestMapping("/tasks")
 class TaskController {
     private final Logger logger = LoggerFactory.getLogger(TaskController.class);
+    private final ApplicationEventPublisher eventPublisher;
     private final TaskRepository taskRepository;
 
-    TaskController(TaskRepository taskRepository) {
+    TaskController(ApplicationEventPublisher eventPublisher, TaskRepository taskRepository) {
+        this.eventPublisher = eventPublisher;
         this.taskRepository = taskRepository;
     }
 
@@ -66,8 +68,8 @@ class TaskController {
             return ResponseEntity.notFound().build();
         }
         taskRepository.findById(id)
-                .ifPresent(task ->
-                    task.setDone(!task.isDone()));
+                .map(Task::toggle)
+                .ifPresent(eventPublisher::publishEvent);
         return ResponseEntity.noContent().build();
     }
 
